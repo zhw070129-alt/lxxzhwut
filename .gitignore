@@ -1,0 +1,9 @@
+node_modules/
+*.py
+*.js
+*.json
+*.txt
+*.docx
+*.html
+!index.html
+.git/

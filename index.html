@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>武理新生指南 - WUT Navigator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #1a56db;
+  --primary-light: #3b82f6;
+  --primary-lighter: #60a5fa;
+  --primary-dark: #1e40af;
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --border: #e2e8f0;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
+  --shadow: 0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,.07),0 2px 4px -2px rgba(0,0,0,.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.08),0 4px 6px -4px rgba(0,0,0,.04);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: .3s cubic-bezier(.4,0,.2,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Sans SC',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Hero ── */
+.hero{
+  position:relative;
+  background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 40%,#1a56db 100%);
+  padding:60px 24px 80px;text-align:center;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-50%;right:-30%;
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(59,130,246,.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero::after{
+  content:'';position:absolute;bottom:-30%;left:-20%;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(96,165,250,.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-badge{
+  display:inline-block;background:rgba(255,255,255,.1);
+  backdrop-filter:blur(10px);padding:6px 18px;border-radius:20px;
+  font-size:13px;color:var(--primary-200);margin-bottom:20px;
+  border:1px solid rgba(255,255,255,.08);
+  letter-spacing:2px;
+}
+.hero h1{
+  font-size:38px;font-weight:900;color:#fff;
+  letter-spacing:-1px;position:relative;z-index:1;
+  text-shadow:0 2px 20px rgba(0,0,0,.2);
+}
+.hero h1 span{display:block;font-size:48px;margin-top:4px;}
+.hero p{
+  color:rgba(255,255,255,.7);margin-top:14px;font-size:16px;
+  position:relative;z-index:1;max-width:400px;margin-left:auto;margin-right:auto;
+}
+.hero-wave{
+  position:absolute;bottom:-2px;left:0;right:0;height:60px;
+  background:var(--bg);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 60V0c240 40 480 40 720 0s480-40 720 0v60z'/%3E%3C/svg%3E") no-repeat bottom;
+  mask:url("data:image/svg+xml,%3Csvg viewBox='0 0 1440 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 60V0c240 40 480 40 720 0s480-40 720 0v60z'/%3E%3C/svg%3E") no-repeat bottom;
+  -webkit-mask-size:cover;mask-size:cover;
+}
+
+/* ── Search ── */
+.search-bar{
+  max-width:560px;margin:-36px auto 24px;padding:0 16px;position:relative;z-index:10;
+}
+.search-bar input{
+  width:100%;padding:14px 20px 14px 48px;border:1px solid var(--border);
+  border-radius:14px;font-size:15px;background:var(--surface);
+  box-shadow:var(--shadow-lg);
+  transition:var(--transition);outline:none;
+  font-family:inherit;
+}
+.search-bar input:focus{border-color:var(--primary-light);box-shadow:0 0 0 4px rgba(59,130,246,.12);}
+.search-bar .search-icon{
+  position:absolute;left:32px;top:50%;transform:translateY(-50%);
+  color:var(--text-muted);font-size:18px;pointer-events:none;
+}
+
+/* ── Admin bar ── */
+.admin-bar{
+  display:flex;justify-content:space-between;align-items:center;
+  max-width:780px;margin:0 auto 20px;padding:0 16px;gap:12px;
+}
+.admin-bar .mode-wrap{
+  display:flex;align-items:center;gap:10px;
+  background:var(--surface);padding:6px;border-radius:12px;
+  box-shadow:var(--shadow-sm);border:1px solid var(--border);
+}
+.mode-btn{
+  padding:6px 16px;border:none;border-radius:8px;font-size:13px;
+  cursor:pointer;transition:var(--transition);font-family:inherit;
+  background:transparent;color:var(--text-secondary);
+  font-weight:500;
+}
+.mode-btn.active{background:var(--primary);color:#fff;box-shadow:var(--shadow-sm);}
+.status-text{
+  font-size:13px;color:var(--text-muted);
+}
+
+/* ── Container ── */
+.container{max-width:780px;margin:0 auto;padding:0 16px 48px;}
+
+/* ── Section ── */
+.section{margin-bottom:28px;}
+.section-header{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:16px;padding:0 4px;
+}
+.section-header .num{
+  width:28px;height:28px;border-radius:8px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-light));
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;flex-shrink:0;
+}
+.section-header h2{
+  font-size:20px;font-weight:700;color:var(--text);
+}
+.section-header .sub{
+  font-size:13px;color:var(--text-muted);margin-left:auto;
+}
+
+/* ── Card Grid ── */
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.card-grid.one-col{grid-template-columns:1fr;}
+
+/* ── Card ── */
+.card{
+  background:var(--surface);border-radius:var(--radius-sm);
+  border:1px solid var(--border);cursor:pointer;
+  transition:var(--transition);overflow:hidden;
+  box-shadow:var(--shadow-sm);
+}
+.card:hover:not(.editing){border-color:var(--primary-200);box-shadow:var(--shadow-md);transform:translateY(-1px);}
+.card-header{
+  padding:14px 16px;display:flex;align-items:center;gap:10px;
+  user-select:none;
+}
+.card-header .icon{
+  width:36px;height:36px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;flex-shrink:0;
+}
+.card-header .icon.c-blue{background:var(--primary-100);color:var(--primary);}
+.card-header .icon.c-green{background:#ecfdf5;color:#059669;}
+.card-header .icon.c-amber{background:#fffbeb;color:#d97706;}
+.card-header .icon.c-purple{background:#f3e8ff;color:#7c3aed;}
+.card-header .icon.c-rose{background:#fff1f2;color:#e11d48;}
+.card-header .icon.c-cyan{background:#ecfeff;color:#0891b2;}
+.card-header .icon.c-sky{background:#e0f2fe;color:#0284c7;}
+.card-header .icon.c-orange{background:#fff7ed;color:#ea580c;}
+.card-header .icon.c-teal{background:#f0fdfa;color:#0d9488;}
+.card-header .icon.c-indigo{background:#eef2ff;color:#4f46e5;}
+
+.card-header .title{
+  font-size:15px;font-weight:600;color:var(--text);flex:1;
+}
+.card-header .arrow{
+  color:var(--text-muted);font-size:14px;transition:var(--transition);
+}
+.card-body{
+  max-height:0;overflow:hidden;transition:max-height .4s ease;
+}
+.card-body-inner{
+  padding:0 16px 16px;font-size:14px;color:var(--text-secondary);
+  line-height:1.8;
+}
+.card-body-inner [contenteditable]{
+  outline:none;padding:8px 12px;border-radius:8px;
+  min-height:60px;transition:var(--transition);
+  background:var(--primary-50);
+}
+.card-body-inner [contenteditable]:focus{
+  background:var(--primary-50);box-shadow:0 0 0 2px var(--primary-200);
+}
+.card.expanded .card-body{max-height:none;}
+.card.expanded .arrow{transform:rotate(180deg);}
+.card.expanded .card-header{border-bottom:1px solid var(--border);}
+
+/* ── Address Card ── */
+.address-card{
+  background:var(--surface);border-radius:var(--radius);
+  border:1px solid var(--border);padding:24px;
+  box-shadow:var(--shadow-sm);text-align:center;
+}
+.address-card .label{
+  font-size:13px;color:var(--text-muted);margin-bottom:6px;
+  letter-spacing:1px;
+}
+.address-card .addr{
+  font-size:18px;font-weight:600;color:var(--text);margin-bottom:14px;
+}
+.address-card .copy-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 20px;border:none;border-radius:10px;
+  background:var(--primary);color:#fff;font-size:14px;
+  cursor:pointer;transition:var(--transition);font-family:inherit;
+  box-shadow:var(--shadow-sm);
+}
+.address-card .copy-btn:hover{background:var(--primary-dark);transform:translateY(-1px);}
+.address-card .copy-btn:active{transform:translateY(0);}
+.address-card .copy-btn.copied{background:#059669;}
+
+/* ── Image upload ── */
+.image-upload{
+  background:var(--surface);border-radius:var(--radius);
+  border:2px dashed var(--border);padding:32px;text-align:center;
+  cursor:pointer;transition:var(--transition);position:relative;
+  min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.image-upload:hover{border-color:var(--primary-200);background:var(--primary-50);}
+.image-upload .icon-big{font-size:40px;color:var(--text-muted);margin-bottom:10px;}
+.image-upload .hint{font-size:14px;color:var(--text-muted);}
+.image-upload .hint small{display:block;font-size:12px;color:var(--text-muted);margin-top:4px;}
+.image-upload img{max-width:100%;max-height:300px;border-radius:8px;object-fit:contain;}
+.image-upload.has-image{border-style:solid;border-color:var(--primary-200);padding:12px;}
+.image-upload input[type=file]{display:none;}
+.image-upload .remove-img{
+  position:absolute;top:8px;right:8px;
+  width:32px;height:32px;border-radius:50%;border:none;
+  background:rgba(0,0,0,.5);color:#fff;font-size:16px;
+  cursor:pointer;display:none;align-items:center;justify-content:center;
+}
+.image-upload.has-image .remove-img{display:flex;}
+.image-upload.has-image .icon-big,.image-upload.has-image .hint{display:none;}
+
+/* ── Contact Card ── */
+.contact-card{
+  background:var(--surface);border-radius:var(--radius);
+  border:1px solid var(--border);padding:24px;
+  box-shadow:var(--shadow-sm);
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+
+/* ── Footer ── */
+.footer{
+  text-align:center;padding:32px 16px 24px;
+  color:var(--text-muted);font-size:13px;
+  border-top:1px solid var(--border);margin-top:12px;
+}
+.footer .heart{color:#e11d48;}
+
+/* ── Search highlight ── */
+.search-highlight{background:#fde68a;padding:0 2px;border-radius:2px;}
+
+/* ── Toast ── */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+  background:var(--text);color:#fff;padding:10px 20px;border-radius:10px;
+  font-size:14px;box-shadow:var(--shadow-lg);z-index:999;
+  opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.toast.show{opacity:1;}
+
+/* ── Empty state ── */
+.empty-content{
+  color:var(--text-muted);font-style:italic;padding:8px 0;
+}
+.card-body-inner .edit-hint{
+  display:none;font-size:12px;color:var(--primary-lighter);margin-top:6px;
+}
+.editing .edit-hint{display:block;}
+
+/* ── Responsive ── */
+@media(max-width:480px){
+  .hero{padding:40px 20px 64px;}
+  .hero h1{font-size:28px;}
+  .hero h1 span{font-size:34px;}
+  .card-grid{grid-template-columns:1fr;}
+  .section-header h2{font-size:18px;}
+  .admin-bar{flex-direction:column;align-items:stretch;}
+  .admin-bar .mode-wrap{justify-content:center;}
+}
+
+/* ── Animations ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.section{animation:fadeUp .5s ease both;}
+.section:nth-child(1){animation-delay:.05s}
+.section:nth-child(2){animation-delay:.1s}
+.section:nth-child(3){animation-delay:.15s}
+.section:nth-child(4){animation-delay:.2s}
+.section:nth-child(5){animation-delay:.25s}
+
+/* Section accordion */
+.section-body{overflow:hidden;transition:max-height .4s ease;max-height:none;}
+.section.collapsed .section-body{max-height:0 !important;}
+.section-header{cursor:pointer;user-select:none;}
+.section-header:hover{opacity:.8;}
+.section-header .arrow{transition:transform .3s ease;font-size:12px;color:var(--text-muted);}
+.section.collapsed .section-header .arrow{transform:rotate(-90deg);}
+
+/* Edit mode improvements */
+.editing .card{cursor:pointer}
+.editing .card-body-inner{outline:2px dashed var(--primary-200);outline-offset:2px;border-radius:8px;padding:8px}
+.editing .content-display{min-height:40px;cursor:text}
+.editable-area{min-height:80px;padding:12px;background:#fff;border:2px solid var(--primary);border-radius:8px;font-size:14px;line-height:1.8;color:var(--text);outline:none}
+.editable-area:focus{box-shadow:0 0 0 3px rgba(59,130,246,.2)}
+
+</style>
+</head>
+<body>
+<body>
+<header class="hero"><div class="hero-badge">🧭 WUT · 2026</div><h1>欢迎<span>武理新同学</span></h1><p>你的大学通关秘籍 · 一站在手 入学不愁</p></header>
+<div class="search-bar"><span class="search-icon">🔍</span><input type="text" id="searchInput" placeholder="搜索你想了解的内容..." autocomplete="off"></div>
+<div class="admin-bar"><span class="status-text" id="statusText">👀 预览模式</span><div class="mode-wrap"><button class="mode-btn active" data-mode="view" onclick="setMode('view')">👀 预览</button><button class="mode-btn" data-mode="edit" onclick="setMode('edit')">✏️ 编辑</button></div></div>
+<div class="container" id="app">
+<div class="section" data-section-id="sec1"><div class="section-header" onclick="toggleSection(this)"><div class="num">1</div><h2>新生入学必看</h2><span class="sub">28项内容</span><span class="arrow">&#9660;</span></div><div class="section-body"><div class="card-grid" data-section="entrance"><div class="card" data-id="report" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-blue">📋</div><span class="title">新生报道</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="report"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="military" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-green">🎯</div><span class="title">军训</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="military"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="edu" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-amber">📖</div><span class="title">本科新生入学教育</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="edu"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="entrance_exam" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-purple">📝</div><span class="title">开学入学考试</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="entrance_exam"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="dormitory" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-cyan">🏠</div><span class="title">宿舍</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="dormitory"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="student_id" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-sky">🪪</div><span class="title">学生证·乘车优惠</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="student_id"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="official_docs" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-orange">📁</div><span class="title">官方文件合集</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="official_docs"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="handbook" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-teal">📕</div><span class="title">学生手册</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="handbook"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="useful_files" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-indigo">📄</div><span class="title">新生一定会用到的文件</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="useful_files"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="face" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-rose">📸</div><span class="title">新生人脸信息采集</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="face"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="schedule" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-blue">⏰</div><span class="title">上课时间表</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="schedule"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="new_majors" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-green">🆕</div><span class="title">26年新专业</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="new_majors"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="health_check" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-amber">🏥</div><span class="title">新生入学体检安排</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="health_check"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="hotels" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-purple">🏨</div><span class="title">南湖附近酒店推荐</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="hotels"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="express" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-cyan">📦</div><span class="title">南湖快递站</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="express"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="school_clubs" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-sky">🎭</div><span class="title">校级社团</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="school_clubs"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="transport" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-teal">🚌</div><span class="title">校内外交通篇</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="transport"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="anti_fraud" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-indigo">🛡️</div><span class="title">新生防骗指南</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="anti_fraud"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="campus_net" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-rose">🌐</div><span class="title">校园网详细版介绍</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="campus_net"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="supermarket" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-blue">🛒</div><span class="title">南湖·鉴湖教育超市</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="supermarket"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="volunteer" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-green">🤝</div><span class="title">志愿活动/入团/党</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="volunteer"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="wut_app" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-amber">📱</div><span class="title">武理APP</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="wut_app"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="class_committee" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-purple">👥</div><span class="title">班委职责</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="class_committee"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="cafeteria" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-cyan">🍽️</div><span class="title">食堂专题</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="cafeteria"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="grad_recommend" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-orange">🎓</div><span class="title">保研专题</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="grad_recommend"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="cards" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-teal">💳</div><span class="title">学生卡·银行卡</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="cards"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="ebike" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-rose">🛵</div><span class="title">电动车实名登记</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="ebike"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="comprehensive" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-blue">📊</div><span class="title">综测</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="comprehensive"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div></div></div></div>
+<div class="section" data-section-id="sec2"><div class="section-header" onclick="toggleSection(this)"><div class="num">2</div><h2>WUTer 必备</h2><span class="sub">6项内容</span><span class="arrow">&#9660;</span></div><div class="section-body"><div class="card-grid" data-section="essentials"><div class="card" data-id="map" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-blue">🗺️</div><span class="title">校园地图</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="map"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="hospital" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-green">🏥</div><span class="title">校医院就诊指南</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="hospital"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="gpa" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-amber">📊</div><span class="title">学分绩点</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="gpa"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="scholarship" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-purple">🏆</div><span class="title">奖学金</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="scholarship"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="exam" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-cyan">📝</div><span class="title">期末必备网站</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="exam"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div><div class="card" data-id="food" onclick="toggleCard(this)"><div class="card-header"><div class="icon c-rose">🍜</div><span class="title">武理美食</span><span class="arrow">&#9660;</span></div><div class="card-body"><div class="card-body-inner" data-content="food"><div class="content-display"><p style="color:var(--text-secondary);">内容待补充 - 请切换到编辑模式修改</p></div></div></div></div></div></div></div>
+<div class="section"><div class="section-header"><div class="num">3</div><h2>📮 快递地址</h2></div><div class="address-card"><div class="label">📦 寄件地址</div><div class="addr">武汉理工大学南湖校区<br>洪山区雄楚大道258号</div><button class="copy-btn" onclick="copyAddress()">📋 复制地址</button></div></div>
+<div class="section"><div class="section-header"><div class="num">4</div><h2>📅 校历</h2></div><div class="image-upload" id="calendarUpload" onclick="document.getElementById('calendarInput').click()"><input type="file" id="calendarInput" accept="image/*" onchange="uploadImage('calendar')"><button class="remove-img" id="calendarRemove" onclick="event.stopPropagation();removeImage('calendar')">✕</button><div class="icon-big">🖼️</div><div class="hint">点击上传校历图片<small>支持 PNG / JPG</small></div></div></div>
+<div class="section"><div class="section-header"><div class="num">5</div><h2>💬 联系方式</h2></div><div class="contact-card"><div class="contact-images" style="display:flex;gap:12px;padding:16px;"><div class="image-upload" style="flex:1;" id="contact1Upload" onclick="document.getElementById('contact1Input').click()"><input type="file" id="contact1Input" accept="image/*" onchange="uploadImage('contact1')"><button class="remove-img" id="contact1Remove" onclick="event.stopPropagation();removeImage('contact1')">✕</button><div class="icon-big">🖼️</div><div class="hint">上传联系方式图片1<small>支持 PNG / JPG</small></div></div><div class="image-upload" style="flex:1;" id="contact2Upload" onclick="document.getElementById('contact2Input').click()"><input type="file" id="contact2Input" accept="image/*" onchange="uploadImage('contact2')"><button class="remove-img" id="contact2Remove" onclick="event.stopPropagation();removeImage('contact2')">✕</button><div class="icon-big">🖼️</div><div class="hint">上传联系方式图片2<small>支持 PNG / JPG</small></div></div></div></div></div>
+</div>
+<footer class="footer">Made with <span class="heart">❤</span> by 武理学长 · 献给2026级新同学</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+var sections = {"entrance": [{"id": "report", "icon": "📋", "color": "c-blue", "title": "新生报道"}, {"id": "military", "icon": "🎯", "color": "c-green", "title": "军训"}, {"id": "edu", "icon": "📖", "color": "c-amber", "title": "本科新生入学教育"}, {"id": "entrance_exam", "icon": "📝", "color": "c-purple", "title": "开学入学考试"}, {"id": "dormitory", "icon": "🏠", "color": "c-cyan", "title": "宿舍"}, {"id": "student_id", "icon": "🪪", "color": "c-sky", "title": "学生证·乘车优惠"}, {"id": "official_docs", "icon": "📁", "color": "c-orange", "title": "官方文件合集"}, {"id": "handbook", "icon": "📕", "color": "c-teal", "title": "学生手册"}, {"id": "useful_files", "icon": "📄", "color": "c-indigo", "title": "新生一定会用到的文件"}, {"id": "face", "icon": "📸", "color": "c-rose", "title": "新生人脸信息采集"}, {"id": "schedule", "icon": "⏰", "color": "c-blue", "title": "上课时间表"}, {"id": "new_majors", "icon": "🆕", "color": "c-green", "title": "26年新专业"}, {"id": "health_check", "icon": "🏥", "color": "c-amber", "title": "新生入学体检安排"}, {"id": "hotels", "icon": "🏨", "color": "c-purple", "title": "南湖附近酒店推荐"}, {"id": "express", "icon": "📦", "color": "c-cyan", "title": "南湖快递站"}, {"id": "school_clubs", "icon": "🎭", "color": "c-sky", "title": "校级社团"}, {"id": "transport", "icon": "🚌", "color": "c-teal", "title": "校内外交通篇"}, {"id": "anti_fraud", "icon": "🛡️", "color": "c-indigo", "title": "新生防骗指南"}, {"id": "campus_net", "icon": "🌐", "color": "c-rose", "title": "校园网详细版介绍"}, {"id": "supermarket", "icon": "🛒", "color": "c-blue", "title": "南湖·鉴湖教育超市"}, {"id": "volunteer", "icon": "🤝", "color": "c-green", "title": "志愿活动/入团/党"}, {"id": "wut_app", "icon": "📱", "color": "c-amber", "title": "武理APP"}, {"id": "class_committee", "icon": "👥", "color": "c-purple", "title": "班委职责"}, {"id": "cafeteria", "icon": "🍽️", "color": "c-cyan", "title": "食堂专题"}, {"id": "grad_recommend", "icon": "🎓", "color": "c-orange", "title": "保研专题"}, {"id": "cards", "icon": "💳", "color": "c-teal", "title": "学生卡·银行卡"}, {"id": "ebike", "icon": "🛵", "color": "c-rose", "title": "电动车实名登记"}, {"id": "comprehensive", "icon": "📊", "color": "c-blue", "title": "综测"}], "essentials": [{"id": "map", "icon": "🗺️", "color": "c-blue", "title": "校园地图"}, {"id": "hospital", "icon": "🏥", "color": "c-green", "title": "校医院就诊指南"}, {"id": "gpa", "icon": "📊", "color": "c-amber", "title": "学分绩点"}, {"id": "scholarship", "icon": "🏆", "color": "c-purple", "title": "奖学金"}, {"id": "exam", "icon": "📝", "color": "c-cyan", "title": "期末必备网站"}, {"id": "food", "icon": "🍜", "color": "c-rose", "title": "武理美食"}]};
+var contentData = {
+  "report": "<h4 style=\"margin:0 0 8px;font-size:15px;color:var(--primary);\">准备工作</h4><p>大一新生拿录取通知书和各种需要带的生活用品（生活用品可以选择到学校购买）。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">新生关注的问题</h4><ul style=\"padding-left:18px;margin:0;\"><li><strong>大一电脑可不可以带电脑</strong> —— 不限制，都可以的</li><li><strong>开学家长可以一起进校园吗</strong> —— 可以</li><li><strong>开学可以开车进校园吗</strong> —— 可以</li><li><strong>学校会派车在高铁、火车站、飞机场接人吗</strong> —— 会，大家注意留意一下</li></ul><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">到校</h4><p>可以选择家人自驾到学校或者乘坐各种交通工具来到武汉各火车站或飞机场。会有迎新校车迎接新生。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">入学报到</h4><p>跟随志愿学长学姐指引到指定地点登记，领取宿舍钥匙。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">入学流程</h4><ol style=\"padding-left:18px;margin:0;\"><li>火车站有校车免费接送和迎新志愿者。</li><li>到达新生接待处（本学院学长学姐接待）。</li><li>领取宿舍钥匙。</li><li>由学长学姐带路去宿舍。</li><li>整理宿舍。</li></ol>",
+  "military": "<h4 style=\"margin:0 0 8px;font-size:15px;color:var(--primary);\">一、军训物品</h4><ol style=\"padding-left:18px;margin:0 0 10px;\"><li><strong>军训服装：</strong>学校发两套衣服、帽子、裤子、鞋子。鞋子建议拍大一码，皮带建议自带。<br><strong>一定要买鞋垫！</strong></li><li><strong>大容量水杯：</strong>学校会发武理大容量水杯（约1000ML）。</li><li><strong>防晒！</strong>不要低估紫外线杀伤力。</li></ol><h4 style=\"margin:12px 0 8px;font-size:14px;color:var(--primary);\">防晒必读</h4><ul style=\"padding-left:18px;margin:0 0 10px;\"><li>防晒涂够量，每次3枚硬币大小。</li><li>选SPF50+ PA++++的高倍防晒。</li><li>休息时记得补涂。</li></ul><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">二、军训注意事宜</h4><ol style=\"padding-left:18px;margin:0 0 10px;\"><li>比教官提前到训练场。</li><li>身体不适及时打报告。</li><li>不要跟教官对着干。</li></ol><p><strong>军训成绩</strong>由教官和辅导员评定，与绩点相关。军训持续<strong>15-16天</strong>。</p>",
+  "edu": "<p>9月5日前完成线上学习课程，可获得<strong>1个课外学分</strong>。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">（1）新生入学教育</h4><p>进入\"我的迎新\"→\"新生入学教育\"，进入理工智课平台学习。9月5日前完成课程视频和结课考试。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">（2）安全微课</h4><p>进入\"我的迎新\"→\"安全微课\"，或关注\"WUT学工在线\"公众号。9月5日前完成必修+选修课程，参加结课考试。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">（3）易班优课入学教育</h4><p>每位新生都需要完成！时间：9月23日-30日。下载易班APP，课群邀请码<strong>WQ7TGFBE</strong>。</p>",
+  "entrance_exam": "<h4 style=\"margin:0 0 8px;font-size:15px;color:var(--primary);\">英语开学考</h4><p>开学进行英语和数学笔试，军训期间面试，综合高考+笔试+面试成绩择优录取。</p><p><strong>快班：</strong>大一下（6月）可考四级<br><strong>慢班：</strong>大二上（12月）可考四级</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">不参加开学考的学生</h4><ul style=\"padding-left:18px;margin:0;\"><li>外国语学院、国际教育学院、艾克斯马赛学院学生</li><li>艺术类专业（设计学类、动画专业）</li><li>高水平运动队运动员</li><li>高考第一外语非英语的小语种学生</li></ul>",
+  "dormitory": "<p>武理宿舍有四人间、五人间、六人间。新宿舍预计28年投入使用。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">宿舍基本信息</h4><ul style=\"padding-left:18px;margin:0 0 10px;\"><li><strong>热水：</strong>6:00-9:00，12:00-14:00，18:00-23:00</li><li><strong>用电：</strong>周日-周四6:00-23:00，周五周六全天</li><li><strong>免费：</strong>用水3吨/月，用电8度/月</li></ul><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">南湖校区</h4><p><strong>卓园：</strong>较新，独立卫浴，多六人间。<br><strong>越园：</strong>较新，独立卫浴，四/五/六人间。<br><strong>慧园：</strong>较旧，独立卫浴，四/六人间。<br><strong>智园：</strong>较旧，独立卫浴，四/六人间。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">鉴湖校区</h4><p>学海宿舍区，四/六人间。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">余家头校区</h4><p>1-6舍（四人间，无独卫），9-14舍（女生六人间），16舍（环境好，独卫独浴），海虹公寓（四人间）。</p>",
+  "student_id": "<h4 style=\"margin:0 0 8px;font-size:15px;color:var(--primary);\">购票渠道</h4><p><strong>铁路12306</strong>（唯一软件）。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">购票方式</h4><p><strong>线下：</strong>凭录取通知书+身份证到人工售票口购票。</p><p><strong>线上：</strong>下载12306APP→\"我的\"→修改类型为\"学生\"。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">重要信息</h4><ul style=\"padding-left:18px;margin:0;\"><li><strong>区间：</strong>仅限家庭和学校所在地之间。</li><li><strong>次数：</strong>每学年4次。</li><li><strong>优惠：</strong>硬座5折，硬卧全价减50%硬座价，高铁二等座7.5折。</li></ul>",
+  "official_docs": "<h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">1. VPN使用帮助</h4><p><strong>WebVPN：</strong>webvpn.whut.edu.cn（无需客户端）</p><p><strong>aTrust VPN：</strong>vpn.whut.edu.cn（需安装客户端）</p><p>登录账号：校园卡号，密码：智慧理工大密码</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">2. 大学英语免修细则</h4><p><strong>校教字〔2019〕79号</strong></p><p><strong>折算已修课程：</strong>CET-6≥450，TOEFL≥80，IELTS≥5.5</p><p><strong>免修后续课程：</strong>CET-6≥570，TOEFL≥95，IELTS≥6.5</p>",
+  "handbook": "<p>武汉理工大学学生手册2023版，共209页：</p><h4 style=\"margin:12px 0 6px;font-size:14px;color:var(--primary);\">学籍管理</h4><ul style=\"padding-left:18px;margin:0 0 6px;font-size:13px;\"><li>全日制普通本科学生学籍管理规定</li><li>学士学位授予办法</li><li>辅修管理办法</li></ul><h4 style=\"margin:12px 0 6px;font-size:14px;color:var(--primary);\">评估奖励</h4><ul style=\"padding-left:18px;margin:0 0 6px;font-size:13px;\"><li>综合素质测评规范</li><li>学生奖励办法</li><li>国家奖学金评审办法</li></ul><h4 style=\"margin:12px 0 6px;font-size:14px;color:var(--primary);\">违纪处分</h4><ul style=\"padding-left:18px;margin:0 0 6px;font-size:13px;\"><li>学生违纪处分办法</li><li>考试违规处理办法</li></ul><h4 style=\"margin:12px 0 6px;font-size:14px;color:var(--primary);\">日常管理</h4><ul style=\"padding-left:18px;margin:0;font-size:13px;\"><li>学生住宿管理规定</li><li>校园网管理规定</li><li>医疗费管理办法</li><li>学分制收费管理办法</li></ul>",
+  "useful_files": "<h4 style=\"margin:0 0 8px;font-size:15px;color:var(--primary);\">1. 补充医疗保险办理</h4><p><strong>收费标准：</strong>每人每年100元，按学制收费</p><p><strong>缴费时间：</strong>9月16日-9月23日</p><p><strong>缴费地点：</strong>南湖学工部学生服务中心一楼、余区工会</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">2. 学信网电子注册</h4><ol style=\"padding-left:18px;margin:0;\"><li>访问学信网（www.chsi.com.cn）</li><li>注册/登录账号</li><li>进入\"学籍查询\"模块</li><li>核对信息后完成注册</li></ol>",
+  "face": "<h4 style=\"margin:0 0 8px;font-size:15px;color:var(--primary);\">师生员工人脸采集</h4><ol style=\"padding-left:18px;margin:0 0 10px;\"><li>微信通讯录→\"我的企业\"→\"武理微校园\"</li><li>→\"平安校园\"→\"人脸采集\"</li><li>按要求上传人脸照片</li></ol><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">非师生常驻人员采集</h4><ol style=\"padding-left:18px;margin:0;\"><li>关注\"平安武理工\"公众号</li><li>指尖服务→非师生人脸采集</li><li>用身份证+密码Abc123++登录</li></ol>",
+  "schedule": "<h4 style=\"margin:0 0 8px;font-size:15px;color:var(--primary);\">上课时间</h4><p>一天五大节课，上午8:00-12:20，下午2:00-6:20。一小节45分钟，两大节间休息20分钟。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">高频教学楼</h4><p><strong>博学楼群（南湖核心）：</strong>新一/新二/新三/新四</p><ul style=\"padding-left:18px;margin:0 0 10px;\"><li>博学主楼（新一）：高数、思政大课</li><li>博学东楼（新二）：技术类小班课</li><li>博学西楼（新三）：专业课、研讨课</li><li>博学北楼（新四）：人文通识选修</li><li>心至楼：数学基础课</li></ul><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">实验实训</h4><ul style=\"padding-left:18px;margin:0;\"><li>立德楼（大创园1号楼）</li><li>立功楼（大创园2号楼）</li></ul>",
+  "new_majors": "<p>2026年武理新增：物理学、知识产权2个本科专业；材料科学与工程、车辆工程、数字经济3个中外合作办学专业。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">物理学</h4><p>小班化教学，师生比大于1:1，配备专属学术导师。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">知识产权</h4><p>法学类本科专业，依托理工科背景。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">中外合作办学</h4><p><strong>材料科学与工程：</strong>2+2模式（蒙纳士大学）</p><p><strong>车辆工程：</strong>4+0模式（伦敦布鲁内尔大学）</p><p><strong>数字经济：</strong>4+0模式（伍伦贡大学）</p>",
+  "health_check": "<h4 style=\"margin:0 0 8px;font-size:15px;color:var(--primary);\">体检时间</h4><p><strong>马区：</strong>9月7-8号全天，9月9号上午8:00-16:30</p><p><strong>余区：</strong>9月7-8号全天8:00-16:00</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">体检地点</h4><p>南湖校区体育馆羽毛球馆</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">注意事项</h4><ul style=\"padding-left:18px;margin:0;\"><li>提前登记并截图二维码</li><li>体检无需空腹</li><li>携带身份证和手机</li></ul>",
+  "hotels": "<p>报到期间周边酒店紧张，建议提前预订。可通过美团、携程查看南湖校区附近酒店。</p><div style=\"color:var(--text-muted);font-style:italic;padding:12px;background:var(--primary-50);border-radius:8px;text-align:center;\">🏨【酒店推荐图片可上传至此】</div>",
+  "express": "<p><strong>1. 菜鸟驿站</strong><br>位置：智13、智14楼下（白色大帐篷）<br>营业：8:00-21:00 电话：15171453303</p><p><strong>2. 多多驿站</strong><br>位置：越园停车场<br>营业：8:30-20:30 电话：13415602604</p>",
+  "school_clubs": "<p>2024年校级社团参考名录（共95个）：</p><div style=\"display:grid;grid-template-columns:1fr 1fr;gap:2px 12px;font-size:13px;line-height:1.8;\"><span>01.新时代学生研习会</span><span>02.学生马克思主义理论学习研究会</span><span>03.法律协会</span><span>04.市场营销协会</span><span>05.环境保护协会</span><span>06.日语协会</span><span>07.学生科学技术协会</span><span>08.电子科技协会</span><span>09.电子商务协会</span><span>10.地理信息系统协会</span><span>11.设计协会</span><span>12.经济学人协会</span><span>13.机器人协会</span><span>14.会计协会</span><span>15.公共管理协会</span><span>16.信息管理协会</span><span>17.陶瓷与艺术协会</span><span>18.人工智能研究协会</span><span>19.Office之家</span><span>20.安全协会</span><span>21.数据科学协会</span><span>22.区块链研究协会</span><span>23.汽车协会</span><span>24.法语协会</span><span>25.机电创新协会</span><span>26.计算机协会</span><span>27.英语协会</span><span>28.未来管理者协会</span><span>29.数学建模协会</span><span>30.社会工作协会</span><span>31.港口协会</span><span>32.物流协会</span><span>33.智能交通协会</span><span>34.创业就业协会</span><span>35.创业就业俱乐部</span><span>36.美术协会</span><span>37.棋术协会</span><span>38.摄影协会</span><span>39.路过文学社</span><span>40.大学生艺术团</span><span>41.乒乓球协会</span><span>42.DV状态协会</span><span>43.轮滑协会</span><span>44.动漫协会</span><span>45.军事爱好者协会</span><span>46.舞蹈协会</span><span>47.篮球协会</span><span>48.棒球协会</span><span>49.自行车协会</span><span>50.水一方剧社</span><span>51.排球协会</span><span>52.国际文化交流协会</span><span>53.桌游协会</span><span>54.笛箫协会</span><span>55.书法协会</span><span>56.魔术协会</span><span>57.漂移板协会</span><span>58.大学生民乐团</span><span>59.大学生管弦乐团</span><span>60.滑板协会</span><span>61.飞镖协会</span><span>62.啦啦操协会</span><span>63.插画社</span><span>64.幽兰琴筝社</span><span>65.国标舞协会</span><span>66.星一口琴协会</span><span>67.大学生古乐团</span><span>68.羽毛球协会</span><span>69.吉他协会</span><span>70.武术协会</span><span>71.书画协会</span><span>72.天文爱好者协会</span><span>73.网球协会</span><span>74.问渠文学社</span><span>75.海呓动漫社</span><span>76.英语狂读协</span><span>77.街舞协会</span><span>78.足球协会</span><span>79.忘言辩论社</span><span>80.溯源剧社</span><span>81.幻灵魔术社</span><span>82.柔力球协会</span><span>83.台球协会</span><span>84.社交舞协会</span><span>85.零域魔方社</span><span>86.长江航运文化研究协会</span><span>87.田径协会</span><span>88.游泳协会</span><span>89.桥牌协会</span><span>90.青年志愿者协会</span><span>91.春晖社</span><span>92.心理素质拓展协会</span><span>93.学生自强社</span><span>94.多民族义务消防队</span><span>95.健身瑜伽协会</span></div>",
+  "transport": "<h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">校内交通</h4><p><strong>校车：</strong>连接南湖-鉴湖-东院。南湖乘车点在博学东楼路口。</p><p><strong>叮叮车：</strong>往返南湖与鉴湖、西院。南湖上车点在博学东楼门口。</p><p><strong>共享电车：</strong>小塔共享电车，前10分钟1元，后续每5分钟0.5元。</p><p><strong>共享单车：</strong>美团单车，1.5元/半小时。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">校外交通</h4><p><strong>南湖校区：</strong>文治街站（8号线）/建安街站（7号线）</p><p><strong>余家头：</strong>余家头站（5号线）</p><p><strong>马房山：</strong>街道口站（2/8号线）/马房山站（8号线）</p>",
+  "anti_fraud": "<h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">卖笔骗局</h4><p>报到期间可能有自称学长学姐的人推销高价文具，不要理会。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">其他提醒</h4><ul style=\"padding-left:18px;margin:0;\"><li>转账汇款先核实身份</li><li>宿舍上门推销一律拒绝</li><li>警惕冒充学校收费的短信</li><li>兼职刷单多是诈骗</li><li>可疑情况联系辅导员</li></ul>",
+  "campus_net": "<p><strong>宿舍区需付费，图书馆教学楼免费。</strong></p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">无线信号</h4><ul style=\"padding-left:18px;margin:0 0 8px;\"><li><strong>教学办公区：</strong>WHUT-WLAN（免费）</li><li><strong>宿舍区：</strong>WHUT-DORM（20元/月，30兆）</li><li><strong>运营商：</strong>WHUT-ISP（需办校园卡）</li></ul><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">缴费方式</h4><p>武汉理工大学缴费平台→网络使用费缴纳。</p>",
+  "supermarket": "<h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">南湖校区</h4><p><strong>1. 教育超市南湖店</strong>（智园楼下）：最大教超，有文创产品。</p><p><strong>2. 天猫超市店</strong>（越园食堂楼下）：商品齐全。</p><p><strong>3. 教育超市井岗店</strong>（南湖服务楼下）：靠近快递点。</p><p><strong>4. 教育超市越园店</strong>（越园楼下）：顺路购物方便。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">鉴湖校区</h4><p><strong>1. 教育超市学海店</strong>（篮球场旁）</p><p><strong>2. 教育超市</strong>（韵苑食堂旁）</p>",
+  "volunteer": "<p>关注学院与学校发布的志愿活动，可获得工时。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">常见活动</h4><ul style=\"padding-left:18px;margin:0;\"><li>迎新晚会志愿者</li><li>运动会志愿者</li><li>开学典礼志愿者</li><li>体测志愿者</li><li>毕业典礼志愿者</li></ul>",
+  "wut_app": "<h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">生活类</h4><ul style=\"padding-left:18px;margin:0 0 8px;\"><li><strong>住理生活APP：</strong>洗澡助手</li><li><strong>社慧通小程序：</strong>吹风机使用</li><li><strong>U净APP：</strong>饮水机+洗衣机</li></ul><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">学习类</h4><ul style=\"padding-left:18px;margin:0 0 8px;\"><li><strong>掌上武理：</strong>查课表</li><li><strong>小雅APP：</strong>课件作业</li><li><strong>赛氪APP：</strong>竞赛报名</li></ul><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">志愿类</h4><ul style=\"padding-left:18px;margin:0;\"><li><strong>志愿汇APP：</strong>活动报名工时记录</li></ul>",
+  "class_committee": "<h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">团支部委员会</h4><ul style=\"padding-left:18px;margin:0 0 8px;\"><li><strong>团支书：</strong>制定支部计划，传达上级安排</li><li><strong>组织委员：</strong>开展基础团务</li><li><strong>宣传委员：</strong>思想引领宣传</li><li><strong>实践委员：</strong>志愿服务组织</li><li><strong>纪律委员：</strong>考勤管理</li></ul><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">班委会</h4><ul style=\"padding-left:18px;margin:0;\"><li><strong>班长：</strong>班风建设，日常管理</li><li><strong>学习委员：</strong>学风建设</li><li><strong>权益委员：</strong>权益问题反馈</li><li><strong>生活委员：</strong>班费资助管理</li><li><strong>心理委员：</strong>关注心理状态</li><li><strong>体育委员：</strong>体育活动组织</li></ul>",
+  "cafeteria": "<div style=\"color:var(--text-muted);font-style:italic;padding:20px;background:var(--primary-50);border:2px dashed var(--primary-200);border-radius:12px;text-align:center;min-height:250px;display:flex;flex-direction:column;align-items:center;justify-content:center;\"><p style=\"font-size:36px;margin:0 0 12px;\">🍽️</p><p style=\"font-size:16px;font-weight:700;color:var(--primary);margin:0 0 8px;\">【食堂专题】</p><p style=\"font-size:14px;color:var(--text-secondary);\">各校区食堂介绍可在此填写</p><p style=\"font-size:12px;color:var(--text-muted);\">下方可上传多张美食图片</p></div><div style=\"color:var(--text-muted);font-style:italic;padding:10px;background:var(--primary-50);border-radius:8px;margin:6px 0;text-align:center;\">【美食图片(1)可上传至此】</div><div style=\"color:var(--text-muted);font-style:italic;padding:10px;background:var(--primary-50);border-radius:8px;margin:6px 0;text-align:center;\">【美食图片(2)可上传至此】</div><div style=\"color:var(--text-muted);font-style:italic;padding:10px;background:var(--primary-50);border-radius:8px;margin:6px 0;text-align:center;\">【美食图片(3)可上传至此】</div>",
+  "grad_recommend": "<p>保研即推荐免试攻读硕士研究生。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">A类 vs B类</h4><ul style=\"padding-left:18px;margin:0 0 8px;\"><li><strong>A保：</strong>附加分上限5分</li><li><strong>B保：</strong>附加分上限15分</li></ul><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">其他渠道</h4><ul style=\"padding-left:18px;margin:0;\"><li><strong>支教保研：</strong>支教1-2年，读本校研究生</li><li><strong>学工保研：</strong>辅导员1-2年，读本校研究生</li></ul>",
+  "cards": "<h4 style=\"margin:0 0 8px;font-size:15px;color:var(--primary);\">学生卡</h4><p>主要用于进出图书馆。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">银行卡</h4><p><strong>统招生：</strong>开学拿工商银行卡，到校内激活。</p><p><strong>非统招生：</strong>如需拿奖学金，可自行办工商银行卡。</p>",
+  "ebike": "<p>电动车需办理实名登记审批。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">登记流程</h4><ol style=\"padding-left:18px;margin:0;\"><li>填写《武汉理工大学电动自行车实名登记审批表》</li><li>本人签字</li><li>学院审批盖章</li></ol>",
+  "comprehensive": "<h4 style=\"margin:0 0 8px;font-size:15px;color:var(--primary);\">综合素质测评结构</h4><ul style=\"padding-left:18px;margin:0;\"><li><strong>思想道德素质：</strong>政治思想、道德修养、集体观念</li><li><strong>科学文化素质：</strong>学业水平</li><li><strong>其他素质：</strong>健康、美育、劳动、素质拓展</li></ul>",
+  "map": "<p><strong>武汉理工大学共有四个校区：</strong>马房山校区、余家头校区、南湖校区、鉴湖校区（南湖校区北院）。校区之间有校车通勤。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">马房山校区</h4><p>位于洪山区珞狮路122号，最大的老校区，分东院和西院。主要是研究生和大三大四同学。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">南湖校区</h4><p>位于洪山区岭南路附近，新校区，设施现代化。一多半新生在此上课。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">余家头校区</h4><p>位于武昌区和平大道1178号，原校区，保留历史建筑。船舶航运等6个学院所在地。</p>",
+  "hospital": "<h4 style=\"margin:0 0 8px;font-size:15px;color:var(--primary);\">1. 马房山西院校医院</h4><p><strong>电话：</strong>027-87600274<br><strong>时间：</strong>周一至周五8:00-18:00</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">2. 马房山东院校医院</h4><p><strong>电话：</strong>027-87850931<br><strong>时间：</strong>周一至周五8:00-18:00（周四至11:30）</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">3. 余家头校区分院</h4><p><strong>电话：</strong>027-86577120<br><strong>时间：</strong>周一至周五8:00-18:00</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">4. 南湖校区医务室</h4><p>地址：文荟东门。通过小程序预约。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">医疗报销</h4><p><strong>医管办电话：</strong>027-87855389</p>",
+  "gpa": "<h4 style=\"margin:0 0 8px;font-size:15px;color:var(--primary);\">学分</h4><p><strong>平均绩点 = Σ课程学分绩点 ÷ Σ课程学分</strong></p><p>考核分考试和考查两种。成绩由平时成绩和期末考试成绩综合评定。</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">绩点用途</h4><ul style=\"padding-left:18px;margin:0 0 8px;\"><li>奖学金评选</li><li>转专业条件</li><li>学位获取</li><li>考研、出国留学、求职</li></ul><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">查询方式</h4><ul style=\"padding-left:18px;margin:0;\"><li><strong>成绩单：</strong>教务系统→学籍→成绩查询</li><li><strong>绩点：</strong>企业微信搜\"移动教务\"→我的成绩</li></ul>",
+  "scholarship": "<h4 style=\"margin:0 0 8px;font-size:15px;color:var(--primary);\">国家奖学金</h4><p>学业水平班级前6%，综测班级前6%。<strong>奖励：</strong>8000元/年·人</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">国家励志奖学金</h4><p>学业水平班级前30%，综测班级前30%。<strong>奖励：</strong>5000元/年·人</p><h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">学校奖学金</h4><p><strong>卓越奖学金：</strong>20000元/人</p><p><strong>一等奖学金：</strong>3000元/人（学业前9%）</p><p><strong>二等奖学金：</strong>2000元/人（学业前17%）</p><p><strong>三等奖学金：</strong>1000元/人（学业前30%）</p>",
+  "exam": "<h4 style=\"margin:0 0 8px;font-size:15px;color:var(--primary);\">毫厘学长资源网</h4><p><a href=\"https://resource.haoli.site/\" target=\"_blank\" style=\"color:var(--primary);\">https://resource.haoli.site/</a></p><p><a href=\"https://docs.qq.com/doc/DTkRTVkZKanRmTW5n\" target=\"_blank\" style=\"color:var(--primary);\">【萌新请看】武理资源共享平台</a></p><p><a href=\"https://docs.qq.com/doc/DTnFuSmJYQmVJUGxB\" target=\"_blank\" style=\"color:var(--primary);\">网站注册-登录指南</a></p>",
+  "food": "<h4 style=\"margin:12px 0 8px;font-size:15px;color:var(--primary);\">南湖美食推荐</h4><p><strong>智园食堂：</strong>智园小站烤冷面、民族窗口热干面、匠心卤、波芙乐甜品、黑椒鸡排饭</p><p><strong>智苑帐篷食堂：</strong>喜多多鲜面（武理第一热干面）、临榆炸鸡腿、江西小炒</p><p><strong>南湖巷：</strong>蜜雪冰城、瑞幸、麻辣香锅</p><p><strong>越苑食堂：</strong>麦当劳、蔡林记、达美乐</p>"
+}
+
+let editing = false;
+
+function init() {
+    var s = document.querySelectorAll('.section[data-section-id]');
+    for (var i = 0; i < s.length; i++) { if (i > 0) s[i].classList.add('collapsed'); }
+    renderCards('entrance');
+    renderCards('essentials');
+    loadImages();
+}
+
+function renderCards(n) {
+    var g = document.querySelector('.card-grid[data-section="' + n + '"]');
+    if (!g) return;
+    var items = (n === 'entrance') ? [["report", "新生报道", "📋", "c-blue"], ["military", "军训", "🎯", "c-green"], ["edu", "本科新生入学教育", "📖", "c-amber"], ["entrance_exam", "开学入学考试", "📝", "c-purple"], ["dormitory", "宿舍", "🏠", "c-cyan"], ["student_id", "学生证·乘车优惠", "🪪", "c-sky"], ["official_docs", "官方文件合集", "📁", "c-orange"], ["handbook", "学生手册", "📕", "c-teal"], ["useful_files", "新生一定会用到的文件", "📄", "c-indigo"], ["face", "新生人脸信息采集", "📸", "c-rose"], ["schedule", "上课时间表", "⏰", "c-blue"], ["new_majors", "26年新专业", "🆕", "c-green"], ["health_check", "新生入学体检安排", "🏥", "c-amber"], ["hotels", "南湖附近酒店推荐", "🏨", "c-purple"], ["express", "南湖快递站", "📦", "c-cyan"], ["school_clubs", "校级社团", "🎭", "c-sky"], ["transport", "校内外交通篇", "🚌", "c-teal"], ["anti_fraud", "新生防骗指南", "🛡️", "c-indigo"], ["campus_net", "校园网详细版介绍", "🌐", "c-rose"], ["supermarket", "南湖·鉴湖教育超市", "🛒", "c-blue"], ["volunteer", "志愿活动/入团/党", "🤝", "c-green"], ["wut_app", "武理APP", "📱", "c-amber"], ["class_committee", "班委职责", "👥", "c-purple"], ["cafeteria", "食堂专题", "🍽️", "c-cyan"], ["grad_recommend", "保研专题", "🎓", "c-orange"], ["cards", "学生卡·银行卡", "💳", "c-teal"], ["ebike", "电动车实名登记", "🛵", "c-rose"], ["comprehensive", "综测", "📊", "c-blue"]] : [["map", "校园地图", "🗺️", "c-blue"], ["hospital", "校医院就诊指南", "🏥", "c-green"], ["gpa", "学分绩点", "📊", "c-amber"], ["scholarship", "奖学金", "🏆", "c-purple"], ["exam", "期末必备网站", "📝", "c-cyan"], ["food", "武理美食", "🍜", "c-rose"]];
+    var cards = g.querySelectorAll('.card');
+    for (var i = 0; i < cards.length; i++) {
+        if (!items[i]) continue;
+        var d = cards[i].querySelector('.content-display');
+        if (d) {
+            var saved = null;
+            try { saved = localStorage.getItem('wut_' + items[i][0]); } catch(e) {}
+            d.innerHTML = saved || contentData[items[i][0]] || '';
+        }
+    }
+}
+
+function toggleSection(h) { h.parentElement.classList.toggle('collapsed'); }
+
+function toggleCard(el) {
+    var exp = el.classList.contains('expanded');
+    var all = document.querySelectorAll('.card.expanded');
+    for (var i = 0; i < all.length; i++) all[i].classList.remove('expanded');
+    if (!exp) {
+        el.classList.add('expanded');
+        if (editing) {
+            var inner = el.querySelector('.card-body-inner');
+            if (inner) { var d = inner.querySelector('.content-display'); if (d) enterEdit(inner.dataset.content, inner); }
+        }
+    }
+}
+
+function loadContent(id) { try { return localStorage.getItem('wut_' + id); } catch(e) { return null; } }
+function saveContent(id, val) { try { localStorage.setItem('wut_' + id, val); } catch(e) {} }
+
+function enterEdit(id, el) {
+    if (!editing) return;
+    var d = el.querySelector('.content-display');
+    if (!d) return;
+    var orig = d.innerHTML;
+    var div = document.createElement('div');
+    div.contentEditable = true;
+    div.innerHTML = orig;
+    div.className = 'editable-area';
+    div.dataset.id = id;
+    div.dataset.orig = orig;
+    d.replaceWith(div);
+    div.focus();
+    div.addEventListener('blur', function() {
+        var val = this.innerHTML;
+        try { localStorage.setItem('wut_' + id, val); } catch(e) {}
+        showToast('已保存');
+        var nd = document.createElement('div');
+        nd.className = 'content-display';
+        nd.innerHTML = val;
+        this.replaceWith(nd);
+    });
+    div.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            showToast('已取消');
+            var nd = document.createElement('div');
+            nd.className = 'content-display';
+            nd.innerHTML = this.dataset.orig;
+            this.replaceWith(nd);
+        }
+    });
+}
+
+function showToast(msg) {
+    var t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 1500);
+}
+
+function setMode(m) {
+    editing = m === 'edit';
+    var b = document.querySelectorAll('.mode-btn');
+    for (var i = 0; i < b.length; i++) b[i].classList.toggle('active', b[i].dataset.mode === m);
+    document.getElementById('statusText').textContent = editing ? '✏️ 编辑模式 - 点击卡片直接编辑，失焦自动保存' : '👀 预览模式 - 点击卡片查看内容';
+    var c = document.querySelectorAll('.card');
+    for (var i = 0; i < c.length; i++) c[i].classList.toggle('editing', editing);
+}
+
+document.addEventListener('click', function(e) {
+    if (!editing) return;
+    var inner = e.target.closest('.card-body-inner');
+    if (!inner) return;
+    var d = inner.querySelector('.content-display');
+    if (!d) return;
+    enterEdit(inner.dataset.content, inner);
+});
+
+function uploadImage(type) {
+    var inp = document.getElementById(type + 'Input');
+    if (!inp || !inp.files[0]) return;
+    var r = new FileReader();
+    r.onload = function(e) {
+        var c = document.getElementById(type + 'Upload');
+        c.classList.add('has-image');
+        var img = c.querySelector('img');
+        if (!img) { img = document.createElement('img'); c.insertBefore(img, c.querySelector('.remove-img').nextSibling); }
+        img.src = e.target.result;
+        try { localStorage.setItem('wut_img_' + type, e.target.result); } catch(ex) {}
+    };
+    r.readAsDataURL(inp.files[0]);
+}
+
+function removeImage(type) {
+    var c = document.getElementById(type + 'Upload');
+    c.classList.remove('has-image');
+    var img = c.querySelector('img');
+    if (img) img.remove();
+    try { localStorage.removeItem('wut_img_' + type); } catch(e) {}
+}
+
+function loadImages() {
+    ['calendar','contact1','contact2'].forEach(function(type) {
+        try { var data = localStorage.getItem('wut_img_' + type); if (data) { var c = document.getElementById(type + 'Upload'); c.classList.add('has-image'); var img = document.createElement('img'); img.src = data; c.insertBefore(img, c.querySelector('.remove-img').nextSibling); } } catch(e) {}
+    });
+}
+
+function copyAddress() {
+    try { navigator.clipboard.writeText('武汉理工大学南湖校区洪山区雄楚大道258号').then(function() { var btn = document.querySelector('.copy-btn'); btn.textContent = '✅ 已复制'; btn.classList.add('copied'); setTimeout(function() { btn.textContent = '📋 复制地址'; btn.classList.remove('copied'); }, 2000); }); } catch(e) {}
+}
+
+document.getElementById('searchInput').addEventListener('input', function() {
+    var q = this.value.trim().toLowerCase();
+    var cards = document.querySelectorAll('.card');
+    for (var i = 0; i < cards.length; i++) {
+        var title = (cards[i].querySelector('.title') || {}).textContent || '';
+        var body = (cards[i].querySelector('.content-display') || {}).textContent || '';
+        var match = !q || title.toLowerCase().indexOf(q) !== -1 || body.toLowerCase().indexOf(q) !== -1;
+        cards[i].style.display = match ? '' : 'none';
+    }
+    var secs = document.querySelectorAll('.section[data-section-id]');
+    for (var i = 0; i < secs.length; i++) {
+        if (q) secs[i].classList.remove('collapsed');
+        else if (secs[i].getAttribute('data-section-id') !== 'sec1') secs[i].classList.add('collapsed');
+    }
+});
+
+init();
+
+</script>
+</body>
+</html>
