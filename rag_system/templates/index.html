@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>武汉理工大学学生手册 - 智能问答系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .chat-box {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h2 {
+            font-size: 1.3em;
+        }
+
+        .stats-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background 0.3s;
+        }
+
+        .stats-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .messages {
+            height: 400px;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.user {
+            text-align: right;
+        }
+
+        .message .bubble {
+            display: inline-block;
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            text-align: left;
+            word-wrap: break-word;
+        }
+
+        .message.user .bubble {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.assistant .bubble {
+            background: white;
+            color: #333;
+            border: 1px solid #e0e0e0;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message .time {
+            font-size: 0.75em;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .results-container {
+            margin-top: 10px;
+            padding: 15px;
+            background: #f0f4ff;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .results-container h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+        }
+
+        .result-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .result-item .meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .result-item .similarity {
+            background: #667eea;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
+        }
+
+        .result-item .content {
+            font-size: 0.95em;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .input-area {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-wrapper input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #667eea;
+        }
+
+        .input-wrapper button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .input-wrapper button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .input-wrapper button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .loading::before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #667eea;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .example-questions {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .example-questions p {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .example-questions .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .example-questions .tag {
+            background: white;
+            border: 1px solid #667eea;
+            color: #667eea;
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .example-questions .tag:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        /* 滚动条样式 */
+        .messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .messages::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+
+        .messages::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a1;
+        }
+
+        /* 统计信息模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .modal-content .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .modal-content .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .modal-content .stat-label {
+            color: #666;
+        }
+
+        .modal-content .stat-value {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .modal-close {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 武汉理工大学学生手册</h1>
+            <p>基于RAG技术的智能问答系统</p>
+        </div>
+
+        <div class="chat-box">
+            <div class="chat-header">
+                <h2>💬 智能问答助手</h2>
+                <button class="stats-btn" onclick="showStats()">📊 系统状态</button>
+            </div>
+
+            <div class="messages" id="messages">
+                <div class="message assistant">
+                    <div class="bubble">
+                        您好！我是武汉理工大学学生手册智能问答助手。
+                        请问有什么关于学生手册的问题需要我帮忙解答？
+                    </div>
+                    <div class="time">系统消息</div>
+                </div>
+            </div>
+
+            <div class="example-questions">
+                <p>💡 试试这些问题：</p>
+                <div class="tags">
+                    <span class="tag" onclick="askQuestion('学生应该遵守哪些行为准则？')">学生行为准则</span>
+                    <span class="tag" onclick="askQuestion('休学的条件和流程是什么？')">休学条件</span>
+                    <span class="tag" onclick="askQuestion('考试作弊会受到什么处分？')">考试作弊处分</span>
+                    <span class="tag" onclick="askQuestion('如何申请奖学金？')">奖学金申请</span>
+                </div>
+            </div>
+
+            <div class="loading" id="loading">正在查询中...</div>
+
+            <div class="input-area">
+                <div class="input-wrapper">
+                    <input type="text" id="questionInput" placeholder="输入您的问题..." onkeypress="handleKeyPress(event)">
+                    <button onclick="askQuestion()" id="sendBtn">发送</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 统计信息模态框 -->
+    <div class="modal" id="statsModal">
+        <div class="modal-content">
+            <h3>📊 系统统计信息</h3>
+            <div id="statsContent">
+                <p>加载中...</p>
+            </div>
+            <button class="modal-close" onclick="closeStats()">关闭</button>
+        </div>
+    </div>
+
+    <script>
+        const messagesDiv = document.getElementById('messages');
+        const questionInput = document.getElementById('questionInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const loadingDiv = document.getElementById('loading');
+        const statsModal = document.getElementById('statsModal');
+        const statsContent = document.getElementById('statsContent');
+
+        function addMessage(content, type, results = null) {
+            const time = new Date().toLocaleTimeString('zh-CN', {hour: '2-digit', minute: '2-digit'});
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+
+            let html = `<div class="bubble">${escapeHtml(content)}</div>`;
+
+            if (results && results.length > 0) {
+                html += `<div class="results-container">`;
+                html += `<h4>📚 相关内容参考（共${results.length}条）</h4>`;
+                results.forEach((r, i) => {
+                    html += `
+                        <div class="result-item">
+                            <div class="meta">
+                                <span>📄 第${r.metadata.page_num}页 - ${escapeHtml(r.metadata.section)}</span>
+                                <span class="similarity">相似度: ${(r.similarity * 100).toFixed(1)}%</span>
+                            </div>
+                            <div class="content">${escapeHtml(r.text)}</div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            html += `<div class="time">${time}</div>`;
+            messageDiv.innerHTML = html;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function askQuestion(question = null) {
+            const q = question || questionInput.value.trim();
+            if (!q) return;
+
+            // 添加用户消息
+            addMessage(q, 'user');
+            questionInput.value = '';
+
+            // 显示加载状态
+            loadingDiv.classList.add('active');
+            sendBtn.disabled = true;
+
+            // 发送请求
+            fetch('/api/query', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({question: q})
+            })
+            .then(response => response.json())
+            .then(data => {
+                loadingDiv.classList.remove('active');
+                sendBtn.disabled = false;
+
+                if (data.success) {
+                    const results = data.data.results || [];
+                    let answer = `根据您的问题，我找到了${results.length}条相关信息。请查看下方的详细内容。`;
+
+                    if (results.length === 0) {
+                        answer = '抱歉，没有找到与您问题相关的内容。请尝试换个方式提问。';
+                    }
+
+                    addMessage(answer, 'assistant', results);
+                } else {
+                    addMessage('抱歉，查询过程中出现错误：' + data.error, 'assistant');
+                }
+            })
+            .catch(error => {
+                loadingDiv.classList.remove('active');
+                sendBtn.disabled = false;
+                addMessage('抱歉，网络请求失败，请稍后重试。', 'assistant');
+                console.error('Error:', error);
+            });
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                askQuestion();
+            }
+        }
+
+        function showStats() {
+            statsModal.classList.add('active');
+            statsContent.innerHTML = '<p>加载中...</p>';
+
+            fetch('/api/stats')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const d = data.data;
+                    statsContent.innerHTML = `
+                        <div class="stat-item">
+                            <span class="stat-label">文档总数</span>
+                            <span class="stat-value">${d.total_documents}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">集合名称</span>
+                            <span class="stat-value">${d.collection_name}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">嵌入模型</span>
+                            <span class="stat-value">${d.model_name.split('/').pop()}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">PDF文件</span>
+                            <span class="stat-value">${d.pdf_path.split(/[/\\\\]/).pop()}</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">状态</span>
+                            <span class="stat-value">${d.is_initialized ? '✅ 就绪' : '⏳ 初始化中'}</span>
+                        </div>
+                    `;
+                } else {
+                    statsContent.innerHTML = '<p>获取统计信息失败</p>';
+                }
+            })
+            .catch(error => {
+                statsContent.innerHTML = '<p>网络请求失败</p>';
+            });
+        }
+
+        function closeStats() {
+            statsModal.classList.remove('active');
+        }
+
+        // 点击模态框外部关闭
+        statsModal.addEventListener('click', function(e) {
+            if (e.target === statsModal) {
+                closeStats();
+            }
+        });
+    </script>
+</body>
+</html>
