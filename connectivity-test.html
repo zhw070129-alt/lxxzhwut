@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>访问测试 - 武理新生指南</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a73e8, #4285f4);
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+        .header h1 { font-size: 22px; margin-bottom: 8px; }
+        .header p { opacity: 0.9; font-size: 14px; }
+        .content { padding: 24px; }
+        .test-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: #f8f9fa;
+            border-left: 4px solid #ddd;
+        }
+        .test-item.running { border-left-color: #f59e0b; }
+        .test-item.pass { border-left-color: #10b981; background: #f0fdf4; }
+        .test-item.fail { border-left-color: #ef4444; background: #fef2f2; }
+        .status-icon { font-size: 20px; margin-right: 12px; min-width: 28px; text-align: center; }
+        .test-info { flex: 1; }
+        .test-name { font-weight: 600; font-size: 14px; color: #1f2937; }
+        .test-desc { font-size: 12px; color: #6b7280; margin-top: 2px; }
+        .test-result { font-size: 13px; font-weight: 500; }
+        .summary {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .summary.good { background: #d1fae5; color: #065f46; }
+        .summary.bad { background: #fee2e2; color: #991b1b; }
+        .info-box {
+            margin-top: 16px;
+            padding: 14px;
+            background: #eff6ff;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #1e40af;
+            line-height: 1.6;
+        }
+        .url-list { margin-top: 12px; }
+        .url-list a {
+            display: block;
+            padding: 8px 12px;
+            margin: 6px 0;
+            background: white;
+            border-radius: 6px;
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 13px;
+            border: 1px solid #e5e7eb;
+        }
+        .url-list a:hover { background: #f0f7ff; }
+        .url-label { font-weight: 600; color: #374151; display: block; margin-bottom: 4px; }
+        .time-info { text-align: center; color: #9ca3af; font-size: 12px; margin-top: 16px; padding: 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📡 武理新生指南 - 访问测试</h1>
+            <p>检测当前网络环境下各平台的可访问性</p>
+        </div>
+        <div class="content">
+            <div class="url-list">
+                <span class="url-label">🌐 推荐访问地址（国内稳定）：</span>
+                <a href="https://wut-navigator.pages.dev" target="_blank">
+                    ✅ Cloudflare Pages: wut-navigator.pages.dev
+                </a>
+                <a href="https://zhw070129-alt.github.io/lxxzhwut" target="_blank">
+                    🔄 GitHub Pages: zhw070129-alt.github.io/lxxzhwut
+                </a>
+            </div>
+
+            <div id="tests" style="margin-top: 20px;"></div>
+            <div id="summary"></div>
+
+            <div class="info-box">
+                💡 <strong>提示：</strong>如果 Cloudflare Pages 无法访问，可尝试绑定自定义域名以获得更稳定的国内访问体验。
+                详见项目中的 <code>DEPLOY_CN.md</code> 部署指南。
+            </div>
+        </div>
+        <div class="time-info" id="time"></div>
+    </div>
+
+    <script>
+        const tests = [
+            {
+                name: "Cloudflare Pages 连接测试",
+                desc: "wut-navigator.pages.dev（推荐）",
+                url: "https://wut-navigator.pages.dev",
+                type: "pages"
+            },
+            {
+                name: "GitHub Pages 连接测试",
+                desc: "zhw070129-alt.github.io/lxxzhwut",
+                url: "https://zhw070129-alt.github.io/lxxzhwut",
+                type: "github"
+            },
+            {
+                name: "DNS 解析测试",
+                desc: "测试 Cloudflare 域名解析",
+                url: "https://dns.google/resolve?name=wut-navigator.pages.dev&type=A",
+                type: "dns"
+            }
+        ];
+
+        document.getElementById('time').textContent =
+            '测试时间: ' + new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
+
+        const container = document.getElementById('tests');
+        const summary = document.getElementById('summary');
+
+        let passCount = 0;
+        let totalTests = tests.length;
+
+        async function runTests() {
+            for (let i = 0; i < tests.length; i++) {
+                const test = tests[i];
+                const el = document.createElement('div');
+                el.className = 'test-item running';
+                el.innerHTML = `
+                    <div class="status-icon">⏳</div>
+                    <div class="test-info">
+                        <div class="test-name">${test.name}</div>
+                        <div class="test-desc">${test.desc}</div>
+                    </div>
+                    <div class="test-result" style="color: #f59e0b;">测试中...</div>
+                `;
+                container.appendChild(el);
+
+                const start = Date.now();
+                let passed = false;
+                let detail = '';
+
+                try {
+                    if (test.type === 'dns') {
+                        const resp = await fetch(test.url);
+                        const data = await resp.json();
+                        if (data.Answer && data.Answer.length > 0) {
+                            passed = true;
+                            detail = `解析成功 (${Date.now() - start}ms)`;
+                        } else {
+                            detail = 'DNS 解析失败';
+                        }
+                    } else {
+                        const controller = new AbortController();
+                        const timeout = setTimeout(() => controller.abort(), 10000);
+                        const resp = await fetch(test.url, {
+                            mode: 'no-cors',
+                            signal: controller.signal
+                        });
+                        clearTimeout(timeout);
+                        passed = true;
+                        detail = `连接成功 (${Date.now() - start}ms)`;
+                    }
+                } catch (e) {
+                    if (e.name === 'AbortError') {
+                        detail = '连接超时 (>10s)';
+                    } else {
+                        detail = '连接失败: ' + e.message;
+                    }
+                }
+
+                if (passed) passCount++;
+                el.className = `test-item ${passed ? 'pass' : 'fail'}`;
+                el.innerHTML = `
+                    <div class="status-icon">${passed ? '✅' : '❌'}</div>
+                    <div class="test-info">
+                        <div class="test-name">${test.name}</div>
+                        <div class="test-desc">${test.desc}</div>
+                    </div>
+                    <div class="test-result" style="color: ${passed ? '#10b981' : '#ef4444'};">
+                        ${detail}
+                    </div>
+                `;
+            }
+
+            // 汇总
+            const allPass = passCount === totalTests;
+            summary.className = `summary ${allPass ? 'good' : 'bad'}`;
+            summary.innerHTML = allPass
+                ? `🎉 所有测试通过 (${passCount}/${totalTests}) — 当前网络环境可正常访问`
+                : `⚠️ 部分服务不可用 (${passCount}/${totalTests} 通过) — 请使用推荐的访问地址`;
+        }
+
+        runTests();
+    </script>
+</body>
+</html>

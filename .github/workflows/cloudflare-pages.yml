@@ -1,0 +1,33 @@
+# Cloudflare Pages 自动部署工作流
+# 国内可通过 Cloudflare 中国节点（京东云合作）直接访问
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+# 只允许同时运行一个部署任务
+concurrency:
+  group: "cloudflare-pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 部署到 Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy . --project-name=wut-navigator --branch=production
+
+      - name: 输出部署信息
+        run: |
+          echo "✅ Cloudflare Pages 部署完成"
+          echo "🌐 项目地址: https://wut-navigator.pages.dev"
+          echo "📡 国内访问: Cloudflare 通过京东云节点提供中国区 CDN 加速"

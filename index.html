@@ -387,6 +387,11 @@ body{
 </style>
 </head>
 <body>
+<!-- 国内访问提示条 -->
+<div id="cn-access-notice" style="display:none;background:linear-gradient(90deg,#1a73e8,#4285f4);color:#fff;padding:10px 16px;text-align:center;font-size:13px;z-index:9999;position:relative;">
+  📡 无法加载页面？试试国内稳定访问地址：<a href="https://wut-navigator.pages.dev" style="color:#fff;text-decoration:underline;font-weight:600;">wut-navigator.pages.dev</a>
+  <span onclick="this.parentElement.style.display='none'" style="cursor:pointer;margin-left:12px;opacity:.7;">✕</span>
+</div>
 <header class="hero">
   <img class="hero-emblem" src="images/校徽.jpg" alt="武汉理工大学校徽" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
   <div class="hero-emblem-placeholder" style="display:none">🏛️</div>
@@ -821,6 +826,17 @@ init();
 
     // 更新页面标题（微信浏览器有时显示 document.title）
     document.title = shareConfig.title;
+})();
+
+// 国内访问检测：如果页面加载超过3秒，显示备用地址提示
+(function() {
+    var loadTime = performance.timing.loadEventEnd - performance.timing.navigationStart;
+    if (loadTime > 3000 || isNaN(loadTime)) {
+        setTimeout(function() {
+            var notice = document.getElementById('cn-access-notice');
+            if (notice) notice.style.display = 'block';
+        }, 500);
+    }
 })();
 
 </script>

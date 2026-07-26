@@ -1,0 +1,12 @@
+# Cloudflare Pages 配置文件
+# 用于 Wrangler CLI 部署
+
+[pages]
+# 项目名称（Cloudflare Pages 会生成 {name}.pages.dev 域名）
+name = "wut-navigator"
+
+# 构建输出目录（纯静态站点直接用根目录）
+directory = "."
+
+# 单页应用配置（如果需要路由支持则设为 true）
+single_page_application = false
