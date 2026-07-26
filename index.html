@@ -7,15 +7,15 @@
 
 <!-- ═══════════════════════════════════════════════════════════════
      微信分享优化 - Open Graph 协议
-     URL: https://lxxzhwut.vercel.app
+      URL: https://zhw070129-alt.github.io/lxxzhwut
      ═══════════════════════════════════════════════════════════════ -->
 
 <!-- 基础分享信息 -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="武理新生指南 - 武汉理工大学2026新生必备">
 <meta property="og:description" content="你的大学通关秘籍！涵盖新生入学、军训、宿舍、选课、GPA、奖学金等全方位攻略，武理新生一站式指南。">
-<meta property="og:url" content="https://lxxzhwut.vercel.app/">
-<meta property="og:image" content="https://lxxzhwut.vercel.app/images/share-cover.png">
+    <meta property="og:url" content="https://zhw070129-alt.github.io/lxxzhwut/">
+    <meta property="og:image" content="https://zhw070129-alt.github.io/lxxzhwut/images/share-cover.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="武理新生指南 - WUT Navigator">
@@ -26,7 +26,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="武理新生指南 - 武汉理工大学2026新生必备">
 <meta name="twitter:description" content="你的大学通关秘籍！涵盖新生入学、军训、宿舍、选课、GPA、奖学金等全方位攻略。">
-<meta name="twitter:image" content="https://lxxzhwut.vercel.app/images/share-cover.png">
+    <meta name="twitter:image" content="https://zhw070129-alt.github.io/lxxzhwut/images/share-cover.png">
 
 <!-- 微信浏览器专用 -->
 <meta name="theme-color" content="#1a56db">
@@ -42,26 +42,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
-  --primary: #1a56db;
+  --primary: #2563eb;
   --primary-light: #3b82f6;
   --primary-lighter: #60a5fa;
-  --primary-dark: #1e40af;
-  --primary-50: #eff6ff;
+  --primary-dark: #1d4ed8;
+  --primary-50: #f0f5ff;
   --primary-100: #dbeafe;
   --primary-200: #bfdbfe;
-  --bg: #f8fafc;
+  --bg: #f6f8fb;
   --surface: #ffffff;
-  --text: #0f172a;
+  --text: #0c1425;
   --text-secondary: #475569;
   --text-muted: #94a3b8;
-  --border: #e2e8f0;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.04);
-  --shadow: 0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,.07),0 2px 4px -2px rgba(0,0,0,.05);
-  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,.08),0 4px 6px -4px rgba(0,0,0,.04);
+  --border: #e5eaf2;
+  --shadow-sm: 0 1px 3px rgba(27,56,120,.04);
+  --shadow: 0 2px 6px rgba(27,56,120,.06),0 1px 2px rgba(27,56,120,.04);
+  --shadow-md: 0 4px 12px rgba(27,56,120,.08),0 2px 4px rgba(27,56,120,.04);
+  --shadow-lg: 0 12px 24px rgba(27,56,120,.10),0 4px 8px rgba(27,56,120,.05);
   --radius: 16px;
-  --radius-sm: 10px;
-  --transition: .3s cubic-bezier(.4,0,.2,1);
+  --radius-sm: 12px;
+  --transition: .35s cubic-bezier(.4,0,.2,1);
+  --transition-fast: .2s cubic-bezier(.4,0,.2,1);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -140,10 +141,10 @@ body{
   width:100%;padding:14px 20px 14px 48px;border:1px solid var(--border);
   border-radius:14px;font-size:15px;background:var(--surface);
   box-shadow:var(--shadow-lg);
-  transition:var(--transition);outline:none;
+  transition:border-color .25s ease,box-shadow .35s ease;outline:none;
   font-family:inherit;
 }
-.search-bar input:focus{border-color:var(--primary-light);box-shadow:0 0 0 4px rgba(59,130,246,.12);}
+.search-bar input:focus{border-color:var(--primary-light);box-shadow:var(--shadow-lg),0 0 0 4px rgba(37,99,235,.10);}
 .search-bar .search-icon{
   position:absolute;left:32px;top:50%;transform:translateY(-50%);
   color:var(--text-muted);font-size:18px;pointer-events:none;
@@ -200,10 +201,10 @@ body{
 .card{
   background:var(--surface);border-radius:var(--radius-sm);
   border:1px solid var(--border);cursor:pointer;
-  transition:var(--transition);overflow:hidden;
+  transition:border-color .25s ease,box-shadow .3s ease,transform .3s ease;overflow:hidden;
   box-shadow:var(--shadow-sm);
 }
-.card:hover:not(.editing){border-color:var(--primary-200);box-shadow:var(--shadow-md);transform:translateY(-1px);}
+.card:hover:not(.editing){border-color:var(--primary-200);box-shadow:var(--shadow-md);transform:translateY(-2px);}
 .card-header{
   padding:14px 16px;display:flex;align-items:center;gap:10px;
   user-select:none;
@@ -231,7 +232,9 @@ body{
   color:var(--text-muted);font-size:14px;transition:var(--transition);
 }
 .card-body{
-  max-height:0;overflow:hidden;transition:max-height .4s ease;
+  max-height:0;overflow:hidden;
+  transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .35s ease;
+  opacity:0;
 }
 .card-body-inner{
   padding:0 16px 16px;font-size:14px;color:var(--text-secondary);
@@ -245,8 +248,8 @@ body{
 .card-body-inner [contenteditable]:focus{
   background:var(--primary-50);box-shadow:0 0 0 2px var(--primary-200);
 }
-.card.expanded .card-body{max-height:2000px;}
-.card.expanded .arrow{transform:rotate(180deg);}
+.card.expanded .card-body{max-height:2000px;opacity:1;}
+.card.expanded .arrow{transform:rotate(180deg);transition:transform .35s cubic-bezier(.4,0,.2,1);}
 .card.expanded .card-header{border-bottom:1px solid var(--border);}
 
 /* ── Address Card ── */
@@ -354,11 +357,11 @@ body{
 .section:nth-child(5){animation-delay:.25s}
 
 /* Section accordion */
-.section-body{overflow:hidden;transition:max-height .4s ease;max-height:5000px;}
+.section-body{overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1);max-height:5000px;}
 .section.collapsed .section-body{max-height:0 !important;}
 .section-header{cursor:pointer;user-select:none;}
-.section-header:hover{opacity:.8;}
-.section-header .arrow{transition:transform .3s ease;font-size:12px;color:var(--text-muted);}
+.section-header:hover{opacity:.85;}
+.section-header .arrow{transition:transform .3s cubic-bezier(.4,0,.2,1);font-size:12px;color:var(--text-muted);}
 .section.collapsed .section-header .arrow{transform:rotate(-90deg);}
 
 /* Edit mode improvements */
@@ -789,8 +792,8 @@ init();
     var shareConfig = {
         title: '武理新生指南 - 武汉理工大学2026新生必备',
         desc: '你的大学通关秘籍！涵盖新生入学、军训、宿舍、选课、GPA、奖学金等全方位攻略，武理新生一站式指南。',
-        link: 'https://lxxzhwut.vercel.app/',
-        imgUrl: 'https://lxxzhwut.vercel.app/images/share-cover.png'
+        link: 'https://zhw070129-alt.github.io/lxxzhwut/',
+        imgUrl: 'https://zhw070129-alt.github.io/lxxzhwut/images/share-cover.png'
     };
 
     // 微信浏览器自动分享（非 JSSDK 模式下依赖 OG 标签）
