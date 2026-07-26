@@ -368,6 +368,19 @@ body{
 .editable-area{min-height:80px;padding:12px;background:#fff;border:2px solid var(--primary);border-radius:8px;font-size:14px;line-height:1.8;color:var(--text);outline:none}
 .editable-area:focus{box-shadow:0 0 0 3px rgba(59,130,246,.2)}
 
+/* 图片保护：编辑模式下 img 禁止编辑的视觉提示 */
+.editable-area img{
+  pointer-events:none;user-select:none;
+  border:2px solid transparent;border-radius:4px;
+  transition:border-color .2s;
+}
+.editable-area img:hover{
+  border-color:var(--primary-200);
+}
+/* 编辑模式下图片上传区域锁定 */
+.editing .image-upload{opacity:.6;pointer-events:none;}
+.editing .image-upload .remove-img{display:none;}
+
 </style>
 </head>
 <body>
@@ -519,9 +532,18 @@ function enterEdit(id, el) {
     div.className = 'editable-area';
     div.dataset.id = id;
     div.dataset.orig = orig;
+    // 保护图片：标记所有 img 为不可编辑
+    protectImages(div);
     d.replaceWith(div);
     div.focus();
+    // 持续监听内容变化，确保新插入的图片也被保护
+    var observer = new MutationObserver(function() { protectImages(div); });
+    observer.observe(div, { childList: true, subtree: true });
+    div._imgObserver = observer;
     div.addEventListener('blur', function() {
+        // 保存前移除图片保护属性，保持内容干净
+        unprotectImages(this);
+        if (this._imgObserver) { this._imgObserver.disconnect(); this._imgObserver = null; }
         var val = this.innerHTML;
         try { localStorage.setItem('wut_' + id, val); } catch(e) {}
         showToast('已保存');
@@ -533,12 +555,49 @@ function enterEdit(id, el) {
     div.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
             showToast('已取消');
+            if (this._imgObserver) { this._imgObserver.disconnect(); this._imgObserver = null; }
+            unprotectImages(this);
             var nd = document.createElement('div');
             nd.className = 'content-display';
             nd.innerHTML = this.dataset.orig;
             this.replaceWith(nd);
         }
     });
+    // 防止通过粘贴方式插入图片
+    div.addEventListener('paste', function(e) {
+        var clip = e.clipboardData || window.clipboardData;
+        if (!clip) return;
+        var items = clip.items || [];
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].type && items[i].type.indexOf('image') !== -1) {
+                e.preventDefault();
+                showToast('⚠️ 编辑模式下不允许粘贴图片');
+                return;
+            }
+        }
+    });
+}
+
+// 保护图片：设置 img 不可编辑、不可拖拽
+function protectImages(container) {
+    var imgs = container.querySelectorAll('img');
+    for (var i = 0; i < imgs.length; i++) {
+        imgs[i].setAttribute('contenteditable', 'false');
+        imgs[i].draggable = false;
+        imgs[i].style.pointerEvents = 'none'; // 防止拖拽操作
+        imgs[i].style.userSelect = 'none';
+    }
+}
+
+// 移除图片保护属性
+function unprotectImages(container) {
+    var imgs = container.querySelectorAll('img');
+    for (var i = 0; i < imgs.length; i++) {
+        imgs[i].removeAttribute('contenteditable');
+        imgs[i].draggable = false;
+        imgs[i].style.pointerEvents = '';
+        imgs[i].style.userSelect = '';
+    }
 }
 
 function showToast(msg) {
@@ -549,7 +608,19 @@ function showToast(msg) {
     setTimeout(function() { t.classList.remove('show'); }, 1500);
 }
 
+// 编辑模式密码（可自行修改）
+var EDIT_PASSWORD = '10260129';
+
 function setMode(m) {
+    if (m === 'edit') {
+        // 需要密码验证
+        var pwd = prompt('🔒 请输入编辑密码：');
+        if (pwd === null) return; // 用户取消
+        if (pwd !== EDIT_PASSWORD) {
+            showToast('❌ 密码错误，无法进入编辑模式');
+            return;
+        }
+    }
     editing = m === 'edit';
     var b = document.querySelectorAll('.mode-btn');
     for (var i = 0; i < b.length; i++) b[i].classList.toggle('active', b[i].dataset.mode === m);
@@ -567,6 +638,78 @@ document.addEventListener('click', function(e) {
     enterEdit(inner.dataset.content, inner);
 });
 
+// ==================== IndexedDB 图片持久化（防止再次消失） ====================
+var _imgDB = null;
+var DB_NAME = 'WutGuideImages';
+var DB_STORE = 'images';
+
+function openImgDB(cb) {
+    if (_imgDB) { cb(_imgDB); return; }
+    try {
+        var req = indexedDB.open(DB_NAME, 1);
+        req.onupgradeneeded = function(e) {
+            var db = e.target.result;
+            if (!db.objectStoreNames.contains(DB_STORE)) {
+                db.createObjectStore(DB_STORE);
+            }
+        };
+        req.onsuccess = function(e) {
+            _imgDB = e.target.result;
+            cb(_imgDB);
+        };
+        req.onerror = function() { cb(null); };
+    } catch(e) { cb(null); }
+}
+
+function idbSave(key, dataUrl, cb) {
+    openImgDB(function(db) {
+        if (!db) { try { localStorage.setItem('wut_img_' + key, dataUrl); } catch(e) {} if (cb) cb(); return; }
+        try {
+            var tx = db.transaction(DB_STORE, 'readwrite');
+            tx.objectStore(DB_STORE).put(dataUrl, key);
+            tx.oncomplete = function() { if (cb) cb(); };
+            tx.onerror = function() { if (cb) cb(); };
+        } catch(e) { if (cb) cb(); }
+    });
+}
+
+function idbLoad(key, cb) {
+    openImgDB(function(db) {
+        if (!db) { var v = null; try { v = localStorage.getItem('wut_img_' + key); } catch(e) {} cb(v); return; }
+        try {
+            var tx = db.transaction(DB_STORE, 'readonly');
+            var req = tx.objectStore(DB_STORE).get(key);
+            req.onsuccess = function(e) {
+                var val = e.target.result || null;
+                // 兼容：如果 IndexedDB 没有，尝试从 localStorage 迁移
+                if (!val) {
+                    try { val = localStorage.getItem('wut_img_' + key); } catch(ex) {}
+                    if (val) idbSave(key, val); // 自动迁移
+                }
+                cb(val);
+            };
+            req.onerror = function() {
+                var v = null; try { v = localStorage.getItem('wut_img_' + key); } catch(e) {} cb(v);
+            };
+        } catch(e) { var v = null; try { v = localStorage.getItem('wut_img_' + key); } catch(ex) {} cb(v); }
+    });
+}
+
+function idbRemove(key, cb) {
+    openImgDB(function(db) {
+        if (!db) { try { localStorage.removeItem('wut_img_' + key); } catch(e) {} if (cb) cb(); return; }
+        try {
+            var tx = db.transaction(DB_STORE, 'readwrite');
+            tx.objectStore(DB_STORE).delete(key);
+            tx.oncomplete = function() {
+                try { localStorage.removeItem('wut_img_' + key); } catch(e) {}
+                if (cb) cb();
+            };
+            tx.onerror = function() { if (cb) cb(); };
+        } catch(e) { if (cb) cb(); }
+    });
+}
+
 function uploadImage(type) {
     var inp = document.getElementById(type + 'Input');
     if (!inp || !inp.files[0]) return;
@@ -577,6 +720,8 @@ function uploadImage(type) {
         var img = c.querySelector('img');
         if (!img) { img = document.createElement('img'); c.insertBefore(img, c.querySelector('.remove-img').nextSibling); }
         img.src = e.target.result;
+        // 同时写入 IndexedDB（主存储）和 localStorage（备份）
+        idbSave('img_' + type, e.target.result);
         try { localStorage.setItem('wut_img_' + type, e.target.result); } catch(ex) {}
     };
     r.readAsDataURL(inp.files[0]);
@@ -587,12 +732,27 @@ function removeImage(type) {
     c.classList.remove('has-image');
     var img = c.querySelector('img');
     if (img) img.remove();
+    idbRemove('img_' + type);
     try { localStorage.removeItem('wut_img_' + type); } catch(e) {}
 }
 
 function loadImages() {
-    ['calendar','contact1','contact2'].forEach(function(type) {
-        try { var data = localStorage.getItem('wut_img_' + type); if (data) { var c = document.getElementById(type + 'Upload'); c.classList.add('has-image'); var img = document.createElement('img'); img.src = data; c.insertBefore(img, c.querySelector('.remove-img').nextSibling); } } catch(e) {}
+    var types = ['calendar','contact1','contact2'];
+    var pending = types.length;
+    if (pending === 0) return;
+    types.forEach(function(type) {
+        idbLoad('img_' + type, function(data) {
+            if (data) {
+                var c = document.getElementById(type + 'Upload');
+                if (c) {
+                    c.classList.add('has-image');
+                    var img = c.querySelector('img');
+                    if (!img) { img = document.createElement('img'); c.insertBefore(img, c.querySelector('.remove-img').nextSibling); }
+                    img.src = data;
+                }
+            }
+            pending--;
+        });
     });
 }
 
